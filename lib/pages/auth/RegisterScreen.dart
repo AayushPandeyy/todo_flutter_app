@@ -26,12 +26,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> signUp(BuildContext context) async {
+    final AuthFirebaseService authService = AuthFirebaseService();
     try {
-      print("Email: ${emailController.text}"); // Debug print
-      print("Password: ${passwordController.text}"); // Debug print
-      print("Username: ${usernameController.text}"); // Debug print
-      await AuthFirebaseService().signUp(emailController.text,
-          passwordController.text, usernameController.text);
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Registering User"),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    CircularProgressIndicator()
+                  ],
+                ),
+              )); // Debug print
+      await authService.signUp(emailController.text, passwordController.text,
+          usernameController.text);
       reset();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const MainPage()));

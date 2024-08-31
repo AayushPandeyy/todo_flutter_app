@@ -3,6 +3,7 @@ import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/auth/RegisterScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
+import 'package:todo_firebase_app/utilities/DialogBox.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -17,7 +18,22 @@ final TextEditingController _passwordController = TextEditingController();
 void login(BuildContext context) async {
   final AuthFirebaseService authService = new AuthFirebaseService();
   try {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Signing In"),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  CircularProgressIndicator()
+                ],
+              ),
+            ));
     await authService.signIn(_emailController.text, _passwordController.text);
+    Navigator.pop(context);
     reset();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const MainPage()));
