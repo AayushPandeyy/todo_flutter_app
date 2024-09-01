@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       showDialog(
           context: context,
-          builder: (context) => AlertDialog(
+          builder: (context) => const AlertDialog(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -45,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await authService.signUp(emailController.text, passwordController.text,
           usernameController.text);
       reset();
+      
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const MainPage()));
     } catch (err) {
