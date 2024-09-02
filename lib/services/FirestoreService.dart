@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Firestoreservice {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -57,6 +58,18 @@ class Firestoreservice {
           .delete();
     } catch (err) {
       print(err);
+    }
+  }
+
+  Future<void> changeCompletedStatus(bool status,String todoId, uid) async{
+    try {
+      await firestore
+          .collection('tasks')
+          .doc(uid)
+          .collection('todos')
+          .doc(todoId).update({"completed":status.toString()});
+    } catch (e) {
+      print(emptyTextSelectionControls);
     }
   }
 }

@@ -27,10 +27,12 @@ class _TodoCardState extends State<TodoCard> {
         children: [
           Checkbox(
             value: completed,
-            onChanged: (value) {
+            onChanged: (value) async {
               setState(() {
                 completed = value!;
               });
+              await firestoreService.changeCompletedStatus(
+                  completed, widget.todoId, auth.currentUser!.uid);
             },
             checkColor: ColorsToUse().secondaryColor,
             activeColor: Colors.black,
