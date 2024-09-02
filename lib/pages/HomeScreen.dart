@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: snapshot.data!
                         .map((data) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: TodoCard(task: data["task"]),
+                              child: TodoCard(todoId: data["uid"],task: data["task"]),
                             ))
                         .toList());
               })),

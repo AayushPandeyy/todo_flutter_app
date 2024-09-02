@@ -24,11 +24,13 @@ class Firestoreservice {
   }
 
   Future<void> addTodo(String uid, task) async {
+    String docId = uid + DateTime.now().toString();
     await firestore
         .collection('tasks')
         .doc(uid)
         .collection("todos")
-        .add({'uid': uid, 'task': task, 'completed': false});
+        .doc(docId)
+        .set({"uid": docId, 'task': task, 'completed': false});
   }
 
   Stream<List<Map<String, dynamic>>> getTasksBasedOnUser(String uid) {
@@ -43,5 +45,18 @@ class Firestoreservice {
         return todo;
       }).toList();
     });
+  }
+
+  Future<void> deleteTask(String todoId, uid) async {
+    try {
+      await firestore
+          .collection('tasks')
+          .doc(uid)
+          .collection('todos')
+          .doc(todoId)
+          .delete();
+    } catch (err) {
+      print(err);
+    }
   }
 }
