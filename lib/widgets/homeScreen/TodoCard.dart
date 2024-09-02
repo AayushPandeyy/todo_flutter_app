@@ -4,9 +4,14 @@ import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
 class TodoCard extends StatefulWidget {
+  final bool status;
   final String todoId;
   final String task;
-  const TodoCard({super.key, required this.task, required this.todoId});
+  const TodoCard(
+      {super.key,
+      required this.task,
+      required this.todoId,
+      required this.status});
 
   @override
   State<TodoCard> createState() => _TodoCardState();
@@ -26,7 +31,7 @@ class _TodoCardState extends State<TodoCard> {
       child: Row(
         children: [
           Checkbox(
-            value: completed,
+            value: widget.status,
             onChanged: (value) async {
               setState(() {
                 completed = value!;

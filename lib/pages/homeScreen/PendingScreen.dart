@@ -1,42 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/AddTaskScreen.dart';
-import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
-import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/homeScreen/TodoCard.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class PendingScreen extends StatefulWidget {
+  const PendingScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PendingScreen> createState() => _PendingScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final AuthFirebaseService authFirebaseService = AuthFirebaseService();
-  final auth = FirebaseAuth.instance;
+class _PendingScreenState extends State<PendingScreen> {
   @override
   Widget build(BuildContext context) {
+    final firestoreService = Firestoreservice();
+    final auth = FirebaseAuth.instance;
     return SafeArea(
-      child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddTaskScreen()));
-            },
-            child: const Icon(Icons.add),
-          ),
+        top: true,
+        child: Scaffold(
+
           backgroundColor: ColorsToUse().primaryColor,
           body: StreamBuilder(
+
               stream:
-                  Firestoreservice().getTasksBasedOnUser(auth.currentUser!.uid),
+                  firestoreService.getTasksBasedOnUserAndStatus(auth.currentUser!.uid,false),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -46,10 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         .map((data) => Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TodoCard(
+                                status: data["completed"],
                                   todoId: data["uid"], task: data["task"]),
                             ))
                         .toList());
-              })),
-    );
+              }),
+        ));
   }
 }

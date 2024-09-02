@@ -3,7 +3,6 @@ import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/auth/RegisterScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
-import 'package:todo_firebase_app/utilities/DialogBox.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

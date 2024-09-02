@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/HomeScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/HomeScreen.dart';
 import 'package:todo_firebase_app/pages/ProfileScreen.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 

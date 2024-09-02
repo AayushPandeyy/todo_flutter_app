@@ -48,6 +48,22 @@ class Firestoreservice {
     });
   }
 
+  Stream<List<Map<String, dynamic>>> getTasksBasedOnUserAndStatus(
+      String uid,bool status) {
+    return firestore
+        .collection('tasks')
+        .doc(uid)
+        .collection('todos')
+        .where("completed", isEqualTo: status)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final todo = doc.data();
+        return todo;
+      }).toList();
+    });
+  }
+
   Future<void> deleteTask(String todoId, uid) async {
     try {
       await firestore
@@ -61,13 +77,14 @@ class Firestoreservice {
     }
   }
 
-  Future<void> changeCompletedStatus(bool status,String todoId, uid) async{
+  Future<void> changeCompletedStatus(bool status, String todoId, uid) async {
     try {
       await firestore
           .collection('tasks')
           .doc(uid)
           .collection('todos')
-          .doc(todoId).update({"completed":status.toString()});
+          .doc(todoId)
+          .update({"completed": status});
     } catch (e) {
       print(emptyTextSelectionControls);
     }
