@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/HomeScreen.dart';
+import 'package:todo_firebase_app/pages/ProfileScreen.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
 class MainPage extends StatefulWidget {
@@ -11,11 +12,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int selectedPage = 0;
-  final pages = const [
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
-  ];
+  final pages = const [HomeScreen(), HomeScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

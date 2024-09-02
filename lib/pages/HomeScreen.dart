@@ -31,19 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Icon(Icons.add),
           ),
           backgroundColor: ColorsToUse().primaryColor,
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    authFirebaseService.logout();
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignInScreen()));
-                  },
-                  icon: Icon(Icons.logout))
-            ],
-          ),
           body: StreamBuilder(
               stream:
                   Firestoreservice().getTasksBasedOnUser(auth.currentUser!.uid),
@@ -58,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: snapshot.data!
                         .map((data) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: TodoCard(todoId: data["uid"],task: data["task"]),
+                              child: TodoCard(
+                                  todoId: data["uid"], task: data["task"]),
                             ))
                         .toList());
               })),
