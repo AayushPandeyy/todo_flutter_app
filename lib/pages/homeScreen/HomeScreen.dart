@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/AddTaskScreen.dart';
+import 'package:todo_firebase_app/enums/TaskCreationType.dart';
+import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/pages/homeScreen/CompletedScreen.dart';
 import 'package:todo_firebase_app/pages/homeScreen/PendingScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
-import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
-import 'package:todo_firebase_app/widgets/homeScreen/TodoCard.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
               centerTitle: true,
               titleSpacing: 0,
               title: Container(
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 color: ColorsToUse().primaryColor,
                 child: const TabBar(
                   tabs: [
@@ -64,11 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AddTaskScreen()));
+                      builder: (context) => const AddOrUpdateTaskScreen(
+                            type: Taskcreationtype.Add,
+                          )));
             },
             child: const Icon(Icons.add),
           ),
-          body: TabBarView(children: [PendingScreen(), CompletedScreen()])),
+          body:
+              const TabBarView(children: [PendingScreen(), CompletedScreen()])),
     );
   }
 }

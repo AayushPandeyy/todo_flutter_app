@@ -45,7 +45,10 @@ class _TodoCardState extends State<TodoCard> {
           Expanded(
             child: Text(
               widget.task,
-              style: const TextStyle(
+              style: TextStyle(
+                  decoration: widget.status
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                   fontFamily: "Gabarito",
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -59,7 +62,6 @@ class _TodoCardState extends State<TodoCard> {
               child: Center(
                   child: IconButton(
                 onPressed: () async {
-                  print("peress");
                   try {
                     await firestoreService.deleteTask(
                         widget.todoId, auth.currentUser!.uid);

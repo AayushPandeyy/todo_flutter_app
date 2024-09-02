@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String placeholder;
+  final String? title;
   const CustomTextField(
-      {super.key, this.controller, required this.placeholder});
+      {super.key, this.controller, required this.placeholder, this.title});
 
   @override
   Widget build(BuildContext context) {
+    if (controller != null && title != null) {
+      controller!.text = title!;
+    } else {}
     return TextField(
       style: const TextStyle(color: Colors.red),
       controller: controller,

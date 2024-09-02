@@ -89,4 +89,17 @@ class Firestoreservice {
       print(emptyTextSelectionControls);
     }
   }
+
+  Future<void> updateTodoTask(String todoId,String uid,String task) async{
+    try {
+      await firestore
+          .collection('tasks')
+          .doc(uid)
+          .collection('todos')
+          .doc(todoId)
+          .update({"task": task});
+    } catch (e) {
+      
+  }
+}
 }

@@ -12,7 +12,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int selectedPage = 0;
-  final pages = const [HomeScreen(), HomeScreen(), ProfileScreen()];
+  final pages = const [HomeScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +34,6 @@ class _MainPageState extends State<MainPage> {
               Icons.home,
             ),
             label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-            ),
-            label: "Search",
           ),
           BottomNavigationBarItem(
             icon: Icon(
