@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
@@ -79,9 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
 
                         int totalTasks = snapshot.data!.length;
-                        final listOfCompletedTask = snapshot.data!
+                        final numberOfCompletedTask = snapshot.data!
                             .where((data) => data["completed"] == true)
-                            .toList();
+                            .toList()
+                            .length;
+                        final numberOfTasksDueToday = snapshot.data!
+                            .where((data) => (DateFormat('d MMMM yyyy').format(
+                                    (data["dueDate"] as Timestamp).toDate()) ==
+                                DateFormat('d MMMM yyyy')
+                                    .format(DateTime.now())))
+                            .toList()
+                            .length;
                         return Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -115,20 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   dataBox(
                                       "All Tasks", totalTasks, Icons.task_alt),
-                                  dataBox("Completed",
-                                      listOfCompletedTask.length, Icons.check),
+                                  dataBox("Completed", numberOfCompletedTask,
+                                      Icons.check),
                                 ],
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   dataBox(
                                       "Incomplete",
-                                      totalTasks - listOfCompletedTask.length,
+                                      totalTasks - numberOfCompletedTask,
                                       Icons.close),
+                                  dataBox("Due Today", numberOfTasksDueToday,
+                                      Icons.today),
                                 ],
                               ),
                               const SizedBox(
