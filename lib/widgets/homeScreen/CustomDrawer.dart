@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/ProfileScreen.dart';
+import 'package:todo_firebase_app/pages/ScheduleScreen.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 import 'package:todo_firebase_app/pages/taskScreens/TaskScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
@@ -29,10 +30,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }, "Profile"),
+          DrawerTile(Icons.category, () {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
+          }, "Categories"),
           DrawerTile(Icons.task_alt_outlined, () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const TaskScreen()));
           }, "Tasks"),
+          DrawerTile(Icons.schedule, () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ScheduleScreen()));
+          }, "Your Schedule"),
           DrawerTile(Icons.logout, () async {
             await authService.logout();
             Navigator.pushReplacement(context,

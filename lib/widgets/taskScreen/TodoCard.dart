@@ -61,21 +61,23 @@ class _TodoCardState extends State<TodoCard> {
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  "Due Date : ${DateFormat('d MMMM yyyy').format(widget.dueDate!.toDate())}",
-                  style: TextStyle(
-                      decoration: widget.status
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                      fontFamily: "Gabarito",
-                      fontSize: 15,
-                      color:
-                          DateTime.now().difference(widget.dueDate!.toDate()) <
-                                  Duration(days: 1)
-                              ? Colors.green
-                              : Colors.red,
-                      fontWeight: FontWeight.bold),
-                ),
+                widget.dueDate != null
+                    ? Text(
+                        "Due Date : ${DateFormat('d MMMM yyyy').format(widget.dueDate!.toDate())}",
+                        style: TextStyle(
+                            decoration: widget.status
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                            fontFamily: "Gabarito",
+                            fontSize: 15,
+                            color: DateTime.now()
+                                        .difference(widget.dueDate!.toDate()) <
+                                    Duration(days: 1)
+                                ? Colors.green
+                                : Colors.red,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : Container()
               ],
             ),
           ),

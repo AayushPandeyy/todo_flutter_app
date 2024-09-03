@@ -32,13 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Map<String, int> tasksCompletedPerDay = {
+      "Sun": 1,
       "Mon": 3,
       "Tue": 5,
       "Wed": 2,
       "Thu": 7,
       "Fri": 4,
       "Sat": 6,
-      "Sun": 1,
     };
     return SafeArea(
         child: Scaffold(
@@ -49,7 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                       fontSize: 40, fontFamily: "Debug", color: Colors.white)),
               centerTitle: true,
-              iconTheme: const IconThemeData(color: Colors.white),
+              iconTheme: const IconThemeData(
+                color: Colors.white,
+              ),
               backgroundColor: ColorsToUse().primaryColor,
             ),
             body: StreamBuilder(

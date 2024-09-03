@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CustomLineGraph extends StatelessWidget {
-  final Map<String,int> tasksCompletedPerDay;
+  final Map<String, int> tasksCompletedPerDay;
   const CustomLineGraph({super.key, required this.tasksCompletedPerDay});
 
   @override
@@ -18,6 +18,7 @@ class CustomLineGraph extends StatelessWidget {
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
+              interval: 1,
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 final day = tasksCompletedPerDay.keys.elementAt(value.toInt());
@@ -35,7 +36,12 @@ class CustomLineGraph extends StatelessWidget {
               },
             ),
           ),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
+
         borderData: FlBorderData(
           show: true,
           border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1),
@@ -81,6 +87,6 @@ class CustomLineGraph extends StatelessWidget {
           ),
         ],
       ),
-    );;
+    );
   }
 }
