@@ -29,12 +29,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     final auth = FirebaseAuth.instance;
     return SafeArea(
         child: Scaffold(
+      backgroundColor: ColorsToUse().primaryColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: ColorsToUse().primaryColor,
+        iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
-        title: Text("Your Schedule",
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddOrUpdateTaskScreen(type: Taskcreationtype.Add)));
+            },
+          )
+        ],
+        title: const Text("Your Schedule",
             style: TextStyle(
-                fontSize: 40, fontFamily: "Debug", color: Colors.black)),
+                fontSize: 40, fontFamily: "Debug", color: Colors.white)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -58,10 +72,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       color: Colors.green))
                   .toList();
               return SfCalendar(
+                headerStyle: CalendarHeaderStyle(
+                    backgroundColor: ColorsToUse().primaryColor,
+                    textStyle: TextStyle(color: Colors.white)),
+                backgroundColor: ColorsToUse().primaryColor,
                 allowAppointmentResize: true,
                 view: CalendarView.schedule,
                 showTodayButton: true,
                 scheduleViewSettings: const ScheduleViewSettings(
+                    dayHeaderSettings: DayHeaderSettings(
+                        dateTextStyle: TextStyle(color: Colors.grey),
+                        dayTextStyle: TextStyle(color: Colors.grey),
+                        width: 60),
                     monthHeaderSettings: MonthHeaderSettings(height: 50),
                     appointmentItemHeight: 40,
                     appointmentTextStyle:
