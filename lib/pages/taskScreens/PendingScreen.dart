@@ -51,7 +51,9 @@ class _PendingScreenState extends State<PendingScreen> {
                                             AddOrUpdateTaskScreen(
                                                 todoId: data["uid"],
                                                 title: data["task"],
-                                                dueDate: (data["dueDate"] as Timestamp).toDate(),
+                                                dueDate: (data["dueDate"]
+                                                        as Timestamp)
+                                                    .toDate(),
                                                 category: data["category"],
                                                 type:
                                                     Taskcreationtype.Update)));
@@ -59,7 +61,7 @@ class _PendingScreenState extends State<PendingScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TodoCard(
-                                  dueDate: data["dueDate"] ,
+                                    dueDate: data["dueDate"],
                                     status: data["completed"],
                                     todoId: data["uid"],
                                     task: data["task"]),

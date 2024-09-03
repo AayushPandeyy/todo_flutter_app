@@ -53,8 +53,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: StreamBuilder(
-            stream:
-                Firestoreservice().getTasksBasedOnUser(auth.currentUser!.uid),
+            stream: Firestoreservice()
+                .getTasksBasedOnUserAndStatus(auth.currentUser!.uid, false),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -97,7 +97,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                     // height: 50,
                     child: Center(
-                      child: Text(DateFormat('MMMM yyyy').format(details.date)),
+                      child: Text(
+                        DateFormat('MMMM yyyy').format(details.date),
+                        style:
+                            TextStyle(fontSize: 25, fontFamily: "UbuntuMono"),
+                      ),
                     ),
                   );
                 },

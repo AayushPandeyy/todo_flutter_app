@@ -47,6 +47,7 @@ class Firestoreservice {
         .collection('tasks')
         .doc(uid)
         .collection('todos')
+        .orderBy('dueDate')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
