@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
-import 'package:todo_firebase_app/widgets/homeScreen/TodoCard.dart';
+import 'package:todo_firebase_app/widgets/taskScreen/TodoCard.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({super.key});

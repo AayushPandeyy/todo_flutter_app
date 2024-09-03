@@ -4,7 +4,7 @@ import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
-import 'package:todo_firebase_app/widgets/homeScreen/TodoCard.dart';
+import 'package:todo_firebase_app/widgets/taskScreen/TodoCard.dart';
 
 class PendingScreen extends StatefulWidget {
   const PendingScreen({super.key});

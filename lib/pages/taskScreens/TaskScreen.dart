@@ -58,17 +58,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   ),
                 ),
               )),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddOrUpdateTaskScreen(
-                            type: Taskcreationtype.Add,
-                          )));
-            },
-            child: const Icon(Icons.add),
-          ),
+          
           body:
               const TabBarView(children: [PendingScreen(), CompletedScreen()])),
     );
