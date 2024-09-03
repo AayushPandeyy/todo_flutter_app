@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
@@ -50,7 +51,7 @@ class _PendingScreenState extends State<PendingScreen> {
                                             AddOrUpdateTaskScreen(
                                                 todoId: data["uid"],
                                                 title: data["task"],
-                                                dueDate: data["dueDate"],
+                                                dueDate: (data["dueDate"] as Timestamp).toDate(),
                                                 category: data["category"],
                                                 type:
                                                     Taskcreationtype.Update)));
@@ -58,7 +59,7 @@ class _PendingScreenState extends State<PendingScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TodoCard(
-                                  dueDate: data["dueDate"],
+                                  dueDate: data["dueDate"] ,
                                     status: data["completed"],
                                     todoId: data["uid"],
                                     task: data["task"]),

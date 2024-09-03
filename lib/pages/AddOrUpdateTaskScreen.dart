@@ -16,7 +16,7 @@ class AddOrUpdateTaskScreen extends StatefulWidget {
   final Enum type;
   final String? todoId;
   final String? category;
-  final Timestamp? dueDate;
+  final DateTime? dueDate;
   const AddOrUpdateTaskScreen(
       {super.key,
       required this.type,
@@ -42,7 +42,7 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
     // TODO: implement initState
     super.initState();
     if (widget.dueDate != null) {
-      _selectedDay = widget.dueDate!.toDate();
+      _selectedDay = widget.dueDate!;
     }
     if (widget.category != null) {
       _selectedCategory = widget.category;
