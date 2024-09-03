@@ -25,11 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DrawerTile(Icons.home, () {
-            Navigator.pop(context);
-          }, "Home"),
           DrawerTile(Icons.person, () {
-            
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }, "Profile"),
@@ -41,7 +37,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             await authService.logout();
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const SignInScreen()));
-          }, "Logout")
+          }, "Logout"),
+          DrawerTile(Icons.close, () {
+            Navigator.pop(context);
+          }, "Close"),
         ],
       ),
     );

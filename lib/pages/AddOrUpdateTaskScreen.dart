@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
+import 'package:todo_firebase_app/utilities/Categories.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/common/CustomButton.dart';
 import 'package:todo_firebase_app/widgets/common/CustomTextField.dart';
@@ -30,13 +31,7 @@ class AddOrUpdateTaskScreen extends StatefulWidget {
 
 class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
   String? _selectedCategory;
-  final List<String> _categories = [
-    'Work',
-    'Personal',
-    'Health',
-    'Finance',
-    'Education',
-  ];
+  final _categories = Categories().categoryIcons.keys.toList();
   final taskController = TextEditingController();
   final firestoreService = Firestoreservice();
   final auth = FirebaseAuth.instance;
@@ -55,13 +50,31 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
   }
 
   void addTodo() async {
-    await firestoreService.addTodo(auth.currentUser!.uid, taskController.text,
-        _selectedCategory, _selectedDay, FieldValue.serverTimestamp());
+    if (_selectedCategory == null || taskController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Please fill all the fields")));
+      return;
+    } else {
+      await firestoreService.addTodo(auth.currentUser!.uid, taskController.text,
+          _selectedCategory, _selectedDay, FieldValue.serverTimestamp());
+      Navigator.pop(context);
+    }
   }
 
   void updateTodo() async {
-    await firestoreService.updateTodoTask(widget.todoId!, auth.currentUser!.uid,
-        taskController.text, _selectedCategory, _selectedDay);
+    if (_selectedCategory == null || taskController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Please fill all the fields")));
+      return;
+    } else {
+      await firestoreService.updateTodoTask(
+          widget.todoId!,
+          auth.currentUser!.uid,
+          taskController.text,
+          _selectedCategory,
+          _selectedDay);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -153,7 +166,6 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
                               ),
                             ));
                     isAdd ? addTodo() : updateTodo();
-                    Navigator.pop(context);
                     Navigator.pop(context);
                   })
             ],

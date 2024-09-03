@@ -45,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: ColorsToUse().primaryColor,
             drawer: const CustomDrawer(),
             appBar: AppBar(
+              title: const Text("Taskopia",
+                  style: TextStyle(
+                      fontSize: 40, fontFamily: "Debug", color: Colors.white)),
+              centerTitle: true,
               iconTheme: const IconThemeData(color: Colors.white),
               backgroundColor: ColorsToUse().primaryColor,
             ),
@@ -93,7 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontFamily: "MarkoOne",
-                                    color: Colors.white),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
                                 height: 20,
@@ -124,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Icons.close),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Expanded(
