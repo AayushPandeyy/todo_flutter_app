@@ -1,5 +1,9 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
@@ -10,25 +14,54 @@ class AddOrUpdateTaskScreen extends StatefulWidget {
   final String? title;
   final Enum type;
   final String? todoId;
+  final String? category;
+  final Timestamp? dueDate;
   const AddOrUpdateTaskScreen(
-      {super.key, required this.type, this.title, this.todoId});
+      {super.key,
+      required this.type,
+      this.title,
+      this.todoId,
+      this.category,
+      this.dueDate});
 
   @override
   State<AddOrUpdateTaskScreen> createState() => _AddOrUpdateTaskScreenState();
 }
 
 class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
+  String? _selectedCategory;
+  final List<String> _categories = [
+    'Work',
+    'Personal',
+    'Health',
+    'Finance',
+    'Education',
+  ];
   final taskController = TextEditingController();
   final firestoreService = Firestoreservice();
   final auth = FirebaseAuth.instance;
+  DateTime _selectedDay = DateTime.now();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.dueDate != null) {
+      _selectedDay = widget.dueDate!.toDate();
+    }
+    if (widget.category != null) {
+      _selectedCategory = widget.category;
+    }
+  }
 
   void addTodo() async {
-    await firestoreService.addTodo(auth.currentUser!.uid, taskController.text);
+    await firestoreService.addTodo(auth.currentUser!.uid, taskController.text,
+        _selectedCategory, _selectedDay, FieldValue.serverTimestamp());
   }
 
   void updateTodo() async {
-    await firestoreService.updateTodoTask(
-        widget.todoId!, auth.currentUser!.uid, taskController.text);
+    await firestoreService.updateTodoTask(widget.todoId!, auth.currentUser!.uid,
+        taskController.text, _selectedCategory, _selectedDay);
   }
 
   @override
@@ -37,52 +70,95 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: ColorsToUse().primaryColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(isAdd ? "Add a new task" : "Update Task",
-              style: const TextStyle(
-                  color: Colors.grey,
+      backgroundColor: Colors.white,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(isAdd ? "Add a new task" : "Update Task",
+                  style: const TextStyle(
+                      color: Colors.grey,
+                      fontFamily: "Gabarito",
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 10,
+              ),
+              SfCalendar(
+                view: CalendarView.month,
+                showTodayButton: true,
+
+                // Set the initial display date to today
+                selectionDecoration: BoxDecoration(
+                    border: Border.all(color: ColorsToUse().primaryColor)),
+                onTap: (CalendarTapDetails details) {
+                  setState(() {
+                    _selectedDay = details.date!;
+                  });
+                },
+                initialSelectedDate: _selectedDay,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomTextField(
+                  title: widget.title,
+                  placeholder: "New Task",
+                  controller: taskController,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Due On : ${DateFormat('d MMMM yyyy').format(_selectedDay)}",
+                style: TextStyle(
+                  fontSize: 25,
                   fontFamily: "Gabarito",
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomTextField(
-              title: widget.title,
-              placeholder: "New Task",
-              controller: taskController,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-              text: isAdd ? "Add" : "Update",
-              onPress: () async {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(isAdd ? "Adding Task" : "Updating Task"),
-                              const SizedBox(
-                                width: 15,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomDropdown(
+                  hintText: "Select a type",
+                  initialItem: _selectedCategory,
+                  items: _categories,
+                  onChanged: (category) {
+                    setState(() {
+                      _selectedCategory = category;
+                    });
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                  text: isAdd ? "Add" : "Update",
+                  onPress: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(isAdd ? "Adding Task" : "Updating Task"),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  const CircularProgressIndicator()
+                                ],
                               ),
-                              const CircularProgressIndicator()
-                            ],
-                          ),
-                        ));
-                isAdd ? addTodo() : updateTodo();
-                Navigator.pop(context);
-                Navigator.pop(context);
-              })
-        ],
+                            ));
+                    isAdd ? addTodo() : updateTodo();
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  })
+            ],
+          ),
+        ),
       ),
     ));
   }

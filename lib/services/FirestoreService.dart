@@ -24,14 +24,22 @@ class Firestoreservice {
         .set({'uid': uid, "email": email, "username": username});
   }
 
-  Future<void> addTodo(String uid, task) async {
+  Future<void> addTodo(
+      String uid, task, category, DateTime dueDate, createdAt) async {
     String docId = uid + DateTime.now().toString();
     await firestore
         .collection('tasks')
         .doc(uid)
         .collection("todos")
         .doc(docId)
-        .set({"uid": docId, 'task': task, 'completed': false});
+        .set({
+      "uid": docId,
+      'task': task,
+      'completed': false,
+      'category': category,
+      'dueDate': dueDate,
+      'createdDate': createdAt
+    });
   }
 
   Stream<List<Map<String, dynamic>>> getTasksBasedOnUser(String uid) {
@@ -49,7 +57,7 @@ class Firestoreservice {
   }
 
   Stream<List<Map<String, dynamic>>> getTasksBasedOnUserAndStatus(
-      String uid,bool status) {
+      String uid, bool status) {
     return firestore
         .collection('tasks')
         .doc(uid)
@@ -90,16 +98,15 @@ class Firestoreservice {
     }
   }
 
-  Future<void> updateTodoTask(String todoId,String uid,String task) async{
+  Future<void> updateTodoTask(String todoId, String uid, String task, category,
+      DateTime dueDate) async {
     try {
       await firestore
           .collection('tasks')
           .doc(uid)
           .collection('todos')
           .doc(todoId)
-          .update({"task": task});
-    } catch (e) {
-      
+          .update({"task": task, "category": category, "dueDate": dueDate});
+    } catch (e) {}
   }
-}
 }

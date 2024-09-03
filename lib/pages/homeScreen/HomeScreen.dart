@@ -6,6 +6,7 @@ import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/homeScreen/CustomDrawer.dart';
+import 'package:todo_firebase_app/widgets/homeScreen/CustomLineGraph.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,9 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
                               Text(
                                 determineTimeOfDay(),
                                 style: TextStyle(
@@ -130,8 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 10,
                               ),
                               Expanded(
-                                child:
-                                    Center(child: chart(tasksCompletedPerDay)),
+                                child: Center(
+                                    child: CustomLineGraph(
+                                        tasksCompletedPerDay:
+                                            tasksCompletedPerDay)),
                               )
                             ],
                           ),
@@ -242,84 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-
-  Widget chart(Map<String, int> tasksCompletedPerDay) {
-    return LineChart(
-      LineChartData(
-        maxY: tasksCompletedPerDay.values
-                .reduce((a, b) => a > b ? a : b)
-                .toDouble() +
-            1, // Maximum Y based on data
-        minX: 0,
-        minY: 0,
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                final day = tasksCompletedPerDay.keys.elementAt(value.toInt());
-                return Text(day,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12));
-              },
-            ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                return Text(value.toInt().toString(),
-                    style: const TextStyle(color: Colors.grey, fontSize: 12));
-              },
-            ),
-          ),
-        ),
-        borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1),
-        ),
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 1,
-          verticalInterval: 1,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(color: Colors.grey.withOpacity(0.3), strokeWidth: 1);
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(color: Colors.grey.withOpacity(0.3), strokeWidth: 1);
-          },
-        ),
-        lineBarsData: [
-          LineChartBarData(
-            spots: tasksCompletedPerDay.entries
-                .map((entry) => FlSpot(
-                      tasksCompletedPerDay.keys
-                          .toList()
-                          .indexOf(entry.key)
-                          .toDouble(),
-                      entry.value.toDouble(),
-                    ))
-                .toList(),
-            isCurved: true,
-            dotData: FlDotData(show: true),
-            color: Colors.blue,
-            barWidth: 3,
-            belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.blue.withOpacity(0.3),
-                  Colors.blue.withOpacity(0.1),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
         ],
       ),
     );

@@ -33,7 +33,10 @@ class _PendingScreenState extends State<PendingScreen> {
                 }
                 if (snapshot.data!.isEmpty) {
                   return const Center(
-                    child: Text("No Tasks",style: TextStyle(fontSize: 30,color: Colors.grey),),
+                    child: Text(
+                      "No Tasks",
+                      style: TextStyle(fontSize: 30, color: Colors.grey),
+                    ),
                   );
                 }
                 return ListView(
@@ -47,6 +50,8 @@ class _PendingScreenState extends State<PendingScreen> {
                                             AddOrUpdateTaskScreen(
                                                 todoId: data["uid"],
                                                 title: data["task"],
+                                                dueDate: data["dueDate"],
+                                                category: data["category"],
                                                 type:
                                                     Taskcreationtype.Update)));
                               },

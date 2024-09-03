@@ -38,6 +38,10 @@ dependencies:
   cloud_firestore: ^5.3.0
   firebase_messaging: ^15.1.0
   fl_chart: ^0.69.0
+  table_calendar: ^3.1.2
+  syncfusion_flutter_calendar: ^26.2.12
+  intl: ^0.19.0
+  animated_custom_dropdown: ^3.1.1
 
 dev_dependencies:
   flutter_test:
