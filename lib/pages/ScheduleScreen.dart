@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
@@ -36,7 +37,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 fontSize: 40, fontFamily: "Debug", color: Colors.black)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15.0),
         child: StreamBuilder(
             stream:
                 Firestoreservice().getTasksBasedOnUser(auth.currentUser!.uid),
@@ -60,6 +61,24 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 allowAppointmentResize: true,
                 view: CalendarView.schedule,
                 showTodayButton: true,
+                scheduleViewSettings: const ScheduleViewSettings(
+                    monthHeaderSettings: MonthHeaderSettings(height: 50),
+                    appointmentItemHeight: 40,
+                    appointmentTextStyle:
+                        TextStyle(fontSize: 18, fontFamily: "UbuntuMono")),
+                scheduleViewMonthHeaderBuilder: (context, details) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromARGB(255, 233, 217, 217),
+                    ),
+                    // height: 50,
+                    child: Center(
+                      child: Text(DateFormat('MMMM yyyy').format(details.date)),
+                    ),
+                  );
+                },
                 initialSelectedDate: _selectedDay,
                 dataSource: EventDataSource(_appointments),
                 onTap: (CalendarTapDetails details) {

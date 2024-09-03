@@ -35,10 +35,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
             //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }, "Categories"),
           DrawerTile(Icons.task_alt_outlined, () {
+            Navigator.pop(context);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const TaskScreen()));
           }, "Tasks"),
           DrawerTile(Icons.schedule, () {
+            Navigator.pop(context);
             Navigator.push(
                 context,
                 MaterialPageRoute(
