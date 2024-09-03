@@ -29,21 +29,14 @@ class _TaskScreenState extends State<TaskScreen> {
                 padding: const EdgeInsets.all(15),
                 color: ColorsToUse().primaryColor,
                 child: const TabBar(
+                  dividerColor: Colors.transparent,
+                  
+                  indicatorColor: Colors.white,
                   tabs: [
                     Tab(
-                      icon: Icon(
-                        Icons.incomplete_circle,
-                        size: 24.0,
-                        color: Colors.blueAccent,
-                      ),
                       text: 'Pending',
                     ),
                     Tab(
-                      icon: Icon(
-                        Icons.check,
-                        size: 24.0,
-                        color: Colors.green,
-                      ),
                       text: 'Completed',
                     ),
                   ],
@@ -58,7 +51,6 @@ class _TaskScreenState extends State<TaskScreen> {
                   ),
                 ),
               )),
-          
           body:
               const TabBarView(children: [PendingScreen(), CompletedScreen()])),
     );

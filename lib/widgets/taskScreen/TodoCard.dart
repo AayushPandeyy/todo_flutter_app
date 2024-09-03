@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
@@ -7,11 +9,13 @@ class TodoCard extends StatefulWidget {
   final bool status;
   final String todoId;
   final String task;
+  final Timestamp? dueDate;
   const TodoCard(
       {super.key,
       required this.task,
       required this.todoId,
-      required this.status});
+      required this.status,
+      this.dueDate});
 
   @override
   State<TodoCard> createState() => _TodoCardState();
@@ -24,7 +28,7 @@ class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: ColorsToUse().secondaryColor),
@@ -43,15 +47,36 @@ class _TodoCardState extends State<TodoCard> {
             activeColor: Colors.black,
           ),
           Expanded(
-            child: Text(
-              widget.task,
-              style: TextStyle(
-                  decoration: widget.status
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
-                  fontFamily: "Gabarito",
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.task,
+                  style: TextStyle(
+                      decoration: widget.status
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      fontFamily: "Gabarito",
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Due Date : ${DateFormat('d MMMM yyyy').format(widget.dueDate!.toDate())}",
+                  style: TextStyle(
+                      decoration: widget.status
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      fontFamily: "Gabarito",
+                      fontSize: 15,
+                      color:
+                          DateTime.now().difference(widget.dueDate!.toDate()) <
+                                  Duration(days: 1)
+                              ? Colors.green
+                              : Colors.red,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
           Container(

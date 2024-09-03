@@ -58,6 +58,7 @@ class _PendingScreenState extends State<PendingScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TodoCard(
+                                  dueDate: data["dueDate"],
                                     status: data["completed"],
                                     todoId: data["uid"],
                                     task: data["task"]),

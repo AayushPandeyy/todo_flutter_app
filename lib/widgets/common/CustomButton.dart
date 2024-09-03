@@ -17,15 +17,13 @@ class CustomButton extends StatelessWidget {
         // width: 175,
         width: MediaQuery.sizeOf(context).width * 0.6,
         decoration: BoxDecoration(
-            border: Border.all(color: ColorsToUse().secondaryColor),
+            border: Border.all(color: Colors.red),
             borderRadius: BorderRadius.circular(10)),
         child: Center(
             child: Text(
           text,
           style: TextStyle(
-              fontFamily: "Gabarito",
-              fontSize: 20,
-              color: ColorsToUse().secondaryColor),
+              fontFamily: "Gabarito", fontSize: 20, color: Colors.red),
         )),
       ),
     );
