@@ -87,9 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             .length;
                         final numberOfTasksDueToday = snapshot.data!
                             .where((data) => (DateFormat('d MMMM yyyy').format(
-                                    (data["dueDate"] as Timestamp).toDate()) ==
-                                DateFormat('d MMMM yyyy')
-                                    .format(DateTime.now())))
+                                        (data["dueDate"] as Timestamp)
+                                            .toDate()) ==
+                                    DateFormat('d MMMM yyyy')
+                                        .format(DateTime.now()) &&
+                                data["completed"] == false))
                             .toList()
                             .length;
                         return Padding(
