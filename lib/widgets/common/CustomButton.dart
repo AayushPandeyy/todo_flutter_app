@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -16,13 +17,15 @@ class CustomButton extends StatelessWidget {
         // width: 175,
         width: MediaQuery.sizeOf(context).width * 0.6,
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.pink),
+            border: Border.all(color: ColorsToUse().secondaryColor),
             borderRadius: BorderRadius.circular(10)),
         child: Center(
             child: Text(
           text,
-          style: const TextStyle(
-              fontFamily: "Gabarito", fontSize: 20, color: Colors.pink),
+          style: TextStyle(
+              fontFamily: "Gabarito",
+              fontSize: 20,
+              color: ColorsToUse().secondaryColor),
         )),
       ),
     );

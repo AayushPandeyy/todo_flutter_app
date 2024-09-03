@@ -19,6 +19,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
     return SafeArea(
         top: true,
         child: Scaffold(
+          
           backgroundColor: ColorsToUse().primaryColor,
           body: StreamBuilder(
               stream: firestoreService.getTasksBasedOnUserAndStatus(
@@ -30,13 +31,23 @@ class _CompletedScreenState extends State<CompletedScreen> {
                   );
                 }
 
+                if (snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "No Tasks",
+                      style: TextStyle(fontSize: 30, color: Colors.grey),
+                    ),
+                  );
+                }
+
                 return ListView(
                     children: snapshot.data!
                         .map((data) => Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TodoCard(
-                                status: data["completed"],
-                                  todoId: data["uid"], task: data["task"]),
+                                  status: data["completed"],
+                                  todoId: data["uid"],
+                                  task: data["task"]),
                             ))
                         .toList());
               }),

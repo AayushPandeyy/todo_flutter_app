@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
+import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/common/CustomButton.dart';
 import 'package:todo_firebase_app/widgets/common/CustomTextField.dart';
 
@@ -36,11 +37,13 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
 
     return SafeArea(
         child: Scaffold(
+      backgroundColor: ColorsToUse().primaryColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(isAdd ? "Add a new task" : "Update Task",
               style: const TextStyle(
+                  color: Colors.grey,
                   fontFamily: "Gabarito",
                   fontSize: 40,
                   fontWeight: FontWeight.bold)),

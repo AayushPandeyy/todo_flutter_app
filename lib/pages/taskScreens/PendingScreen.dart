@@ -31,7 +31,11 @@ class _PendingScreenState extends State<PendingScreen> {
                     child: CircularProgressIndicator(),
                   );
                 }
-
+                if (snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text("No Tasks",style: TextStyle(fontSize: 30,color: Colors.grey),),
+                  );
+                }
                 return ListView(
                     children: snapshot.data!
                         .map((data) => GestureDetector(
@@ -40,9 +44,9 @@ class _PendingScreenState extends State<PendingScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                             AddOrUpdateTaskScreen(
-                                              todoId: data["uid"],
-                                              title: data["task"],
+                                            AddOrUpdateTaskScreen(
+                                                todoId: data["uid"],
+                                                title: data["task"],
                                                 type:
                                                     Taskcreationtype.Update)));
                               },
