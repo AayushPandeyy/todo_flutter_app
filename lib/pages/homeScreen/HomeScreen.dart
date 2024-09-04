@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
@@ -29,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       return "Good Evening";
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -121,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Row(
+                              Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
@@ -129,15 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "All Tasks", totalTasks, Icons.task_alt),
                                   dataBox("Completed", numberOfCompletedTask,
                                       Icons.check),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
                                   dataBox(
                                       "Incomplete",
                                       totalTasks - numberOfCompletedTask,
@@ -149,11 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               Expanded(
-                                child: Center(
-                                    child: CustomLineGraph(
-                                        tasksCompletedPerDay:
-                                            tasksCompletedPerDay)),
+                                child: Center(child: BannerAdWidget()),
                               )
                             ],
                           ),
@@ -223,49 +221,56 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget dataBox(String title, int data, IconData icon) {
-    return Container(
-      height: 90,
-      width: 170,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(15)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 10,
-          ),
-          Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                color: Colors.red, borderRadius: BorderRadius.circular(20)),
-            child: Icon(icon),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontFamily: "Gabarito",
-                      fontSize: 20,
-                      color: Color.fromARGB(255, 216, 214, 214)),
+    return Column(
+      children: [
+        Container(
+          height: 70,
+          width: MediaQuery.sizeOf(context).width * 0.91,
+          decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(15)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(20)),
+                child: Icon(icon),
+              ),
+              Expanded(
+                child: Center(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        fontFamily: "Gabarito",
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 216, 214, 214)),
+                  ),
                 ),
-                Text(
-                  data.toString(),
-                  style: const TextStyle(
-                      fontFamily: "Gabarito",
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+              ),
+              Text(
+                data.toString(),
+                style: const TextStyle(
+                    fontFamily: "Gabarito",
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: 20,
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
     );
   }
 }

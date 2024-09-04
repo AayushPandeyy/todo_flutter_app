@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
@@ -21,10 +23,49 @@ class TodoCard extends StatefulWidget {
   State<TodoCard> createState() => _TodoCardState();
 }
 
+InterstitialAd? _interstitialAd;
+int _numInterstitialLoadAttempts = 0;
+
+final int _maxFailedLoadAttempts = 3;
+
 class _TodoCardState extends State<TodoCard> {
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId:
+          'ca-app-pub-3940256099942544/1033173712', // Replace with your Ad Unit ID
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _numInterstitialLoadAttempts = 0;
+            _interstitialAd!.setImmersiveMode(true);
+          });
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          setState(() {
+            _numInterstitialLoadAttempts += 1;
+            _interstitialAd = null;
+          });
+          if (_numInterstitialLoadAttempts < _maxFailedLoadAttempts) {
+            loadInterstitialAd(); // Retry loading the ad
+          }
+        },
+      ),
+    );
+  }
+
   final firestoreService = Firestoreservice();
   final auth = FirebaseAuth.instance;
   bool completed = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadInterstitialAd();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,6 +83,7 @@ class _TodoCardState extends State<TodoCard> {
               });
               await firestoreService.changeCompletedStatus(
                   completed, widget.todoId, auth.currentUser!.uid);
+              _interstitialAd!.show();
             },
             checkColor: ColorsToUse().secondaryColor,
             activeColor: Colors.black,

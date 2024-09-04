@@ -2,8 +2,10 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/Categories.dart';
@@ -36,11 +38,42 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
   final firestoreService = Firestoreservice();
   final auth = FirebaseAuth.instance;
   DateTime _selectedDay = DateTime.now();
+  InterstitialAd? _interstitialAd;
+  int _numInterstitialLoadAttempts = 0;
+
+  final int _maxFailedLoadAttempts = 3; // Maximum load attempts
+
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId:
+          'ca-app-pub-3940256099942544/1033173712', // Replace with your Ad Unit ID
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          setState(() {
+            _interstitialAd = ad;
+            _numInterstitialLoadAttempts = 0;
+            _interstitialAd!.setImmersiveMode(true);
+          });
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          setState(() {
+            _numInterstitialLoadAttempts += 1;
+            _interstitialAd = null;
+          });
+          if (_numInterstitialLoadAttempts < _maxFailedLoadAttempts) {
+            loadInterstitialAd(); // Retry loading the ad
+          }
+        },
+      ),
+    );
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadInterstitialAd();
     if (widget.dueDate != null) {
       _selectedDay = widget.dueDate!;
     }
@@ -48,6 +81,9 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
       _selectedCategory = widget.category;
     }
   }
+
+  BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
 
   void addTodo() async {
     if (_selectedCategory == null || taskController.text.isEmpty) {
@@ -57,6 +93,7 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
     } else {
       await firestoreService.addTodo(auth.currentUser!.uid, taskController.text,
           _selectedCategory, _selectedDay, FieldValue.serverTimestamp());
+      _interstitialAd!.show();
       Navigator.pop(context);
     }
   }
@@ -89,6 +126,7 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              BannerAdWidget(),
               Text(isAdd ? "Add a new task" : "Update Task",
                   style: const TextStyle(
                       color: Colors.grey,
@@ -101,7 +139,6 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
               SfCalendar(
                 view: CalendarView.month,
                 showTodayButton: true,
-
                 // Set the initial display date to today
                 selectionDecoration: BoxDecoration(
                     border: Border.all(color: ColorsToUse().primaryColor)),
