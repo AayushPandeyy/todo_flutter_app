@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/MainPage.dart';
-import 'package:todo_firebase_app/pages/ProfileScreen.dart';
 import 'package:todo_firebase_app/pages/ScheduleScreen.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 import 'package:todo_firebase_app/pages/taskScreens/TaskScreen.dart';
