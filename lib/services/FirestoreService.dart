@@ -125,7 +125,6 @@ class Firestoreservice {
           .doc(uid)
           .collection(completedDate.toString())
           .doc()
-          
           .set({
         "task": task,
         "category": category,
@@ -137,46 +136,41 @@ class Firestoreservice {
     } catch (e) {}
   }
 
-Future<Map<String, int>> getCompletedTasksCountByDate(String uid) async {
+  Future<Map<String, int>> getCompletedTasksCountByDate(String uid) async {
+    // Initialize the map to store counts of completed tasks by date
+    final Map<String, int> tasksCompletedByDate = {};
 
-  // Initialize the map to store counts of completed tasks by date
-  final Map<String, int> tasksCompletedByDate = {};
+    // Fetch all documents from the 'todos' collection for the specified user
+    final snapshot =
+        await firestore.collection('tasks').doc(uid).collection('todos').get();
 
-  // Fetch all documents from the 'todos' collection for the specified user
-  final snapshot = await firestore
-      .collection('tasks')
-      .doc(uid)
-      .collection('todos')
-      .get();
+    // Iterate over each document in the snapshot
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
 
-  // Iterate over each document in the snapshot
-  for (var doc in snapshot.docs) {
-    final data = doc.data();
+      // Check if the task is marked as completed
+      if (data['completed'] == true && data['completedOn'] != null) {
+        // Convert the Firestore Timestamp to DateTime
+        final completedOnDate = (data['completedOn'] as Timestamp).toDate();
 
-    // Check if the task is marked as completed
-    if (data['completed'] == true && data['completedOn'] != null) {
-      // Convert the Firestore Timestamp to DateTime
-      final completedOnDate = (data['completedOn'] as Timestamp).toDate();
+        // Normalize the date to just the date part (midnight)
+        final normalizedDate = DateTime(
+          completedOnDate.year,
+          completedOnDate.month,
+          completedOnDate.day,
+        );
 
-      // Normalize the date to just the date part (midnight)
-      final normalizedDate = DateTime(
-        completedOnDate.year,
-        completedOnDate.month,
-        completedOnDate.day,
-      );
-
-      // Increment the count of tasks completed on this normalized date
-      if (tasksCompletedByDate.containsKey(normalizedDate)) {
-        tasksCompletedByDate[normalizedDate.toString()] = tasksCompletedByDate[normalizedDate]! + 1;
-      } else {
-        tasksCompletedByDate[normalizedDate.toString()] = 1;
+        // Increment the count of tasks completed on this normalized date
+        if (tasksCompletedByDate.containsKey(normalizedDate)) {
+          tasksCompletedByDate[normalizedDate.toString()] =
+              tasksCompletedByDate[normalizedDate]! + 1;
+        } else {
+          tasksCompletedByDate[normalizedDate.toString()] = 1;
+        }
       }
     }
+
+    // Return the map with counts of completed tasks by date
+    return tasksCompletedByDate;
   }
-
-  // Return the map with counts of completed tasks by date
-  return tasksCompletedByDate;
-}
-
-  
 }

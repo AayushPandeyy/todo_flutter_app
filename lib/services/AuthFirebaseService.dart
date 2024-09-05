@@ -12,12 +12,20 @@ class AuthFirebaseService {
   Future<UserCredential> signIn(String email, String password) async {
     try {
       UserCredential user = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-
+        email: email,
+        password: password,
+      );
       return user;
     } on FirebaseAuthException catch (err) {
-      print(err);
-      throw Exception(err);
+      print("FirebaseAuthException: ${err.code} - ${err.message}");
+      // Re-throwing the FirebaseAuthException with both code and message
+      throw FirebaseAuthException(
+        code: err.code,
+        message: err.message,
+      );
+    } catch (e) {
+      print("Unexpected error: $e");
+      throw Exception('An unexpected error occurred');
     }
   }
 
@@ -29,13 +37,13 @@ class AuthFirebaseService {
     try {
       UserCredential user = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      print(user);
       firestoreService.addUserToDatabase(user.user!.uid, email, username);
+      if (!user.user!.emailVerified) {
+        await user.user!.sendEmailVerification();
+      }
+      print(user);
 
+      await FirebaseAuth.instance.signOut();
       return user;
     } on FirebaseAuthException catch (err) {
       print(err);

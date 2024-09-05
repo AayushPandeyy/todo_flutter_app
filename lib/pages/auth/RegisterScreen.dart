@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/MainPage.dart';
+import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
+import 'package:todo_firebase_app/utilities/DialogBox.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
+  final dialogBox = DialogBox();
 
   bool obscure = true;
 
@@ -28,26 +32,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> signUp(BuildContext context) async {
     final AuthFirebaseService authService = AuthFirebaseService();
     try {
+      dialogBox.showLoadingDialog(context, "Registering User"); // Debug print
+      UserCredential user = await authService.signUp(emailController.text,
+          passwordController.text, usernameController.text);
+
       showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Registering User"),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    CircularProgressIndicator()
-                  ],
-                ),
-              )); // Debug print
-      await authService.signUp(emailController.text, passwordController.text,
-          usernameController.text);
-      reset();
-      
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const MainPage()));
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Verification Email Sent"),
+          content: Text(
+              "A verification email has been sent. Please verify your email and login to your account."),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                Navigator.pop(context),
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()))
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
     } catch (err) {
       print(err.runtimeType);
 
