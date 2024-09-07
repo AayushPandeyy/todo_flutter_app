@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/ScheduleScreen.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
+import 'package:todo_firebase_app/pages/categoryScreen/CategoryScreen.dart';
 import 'package:todo_firebase_app/pages/taskScreens/TaskScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
@@ -29,8 +30,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
           }, "Profile"),
           DrawerTile(Icons.category, () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CategoryScreen()));
           }, "Categories"),
           DrawerTile(Icons.task_alt_outlined, () {
             Navigator.pop(context);
