@@ -73,6 +73,23 @@ class Firestoreservice {
     });
   }
 
+  Stream<List<Map<String, dynamic>>> getTasksBasedOnUserAndCategoryAndStatus(
+      String uid, String category, bool status) {
+    return firestore
+        .collection('tasks')
+        .doc(uid)
+        .collection('todos')
+        .where("completed", isEqualTo: status)
+        .where("category", isEqualTo: category)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final todo = doc.data();
+        return todo;
+      }).toList();
+    });
+  }
+
   Future<void> deleteTask(String todoId, uid) async {
     try {
       await firestore

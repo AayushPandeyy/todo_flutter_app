@@ -23,6 +23,8 @@ class _TaskScreenState extends State<TaskScreen> {
       length: 2,
       child: Scaffold(
           appBar: AppBar(
+              backgroundColor: ColorsToUse().primaryColor,
+              iconTheme: IconThemeData(color: Colors.white),
               centerTitle: true,
               titleSpacing: 0,
               title: Container(
@@ -30,7 +32,6 @@ class _TaskScreenState extends State<TaskScreen> {
                 color: ColorsToUse().primaryColor,
                 child: const TabBar(
                   dividerColor: Colors.transparent,
-                  
                   indicatorColor: Colors.white,
                   tabs: [
                     Tab(

@@ -4,26 +4,30 @@ import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/taskScreen/TodoCard.dart';
 
-class CompletedScreen extends StatefulWidget {
-  const CompletedScreen({super.key});
+class CompletedSpecificCategory extends StatefulWidget {
+  final String category;
+  const CompletedSpecificCategory({super.key, required this.category});
 
   @override
-  State<CompletedScreen> createState() => _CompletedScreenState();
+  State<CompletedSpecificCategory> createState() => _CompletedSpecificCategoryState();
 }
 
-class _CompletedScreenState extends State<CompletedScreen> {
+class _CompletedSpecificCategoryState extends State<CompletedSpecificCategory> {
   @override
   Widget build(BuildContext context) {
-    final firestoreService = Firestoreservice();
+   final firestoreService = Firestoreservice();
     final auth = FirebaseAuth.instance;
     return SafeArea(
         top: true,
         child: Scaffold(
+          
           backgroundColor: ColorsToUse().primaryColor,
           body: StreamBuilder(
-              stream: firestoreService.getTasksBasedOnUserAndStatus(
-                  auth.currentUser!.uid, true),
+              stream: firestoreService.getTasksBasedOnUserAndCategoryAndStatus(
+                  auth.currentUser!.uid, widget.category ,true),
               builder: (context, snapshot) {
+                print(snapshot.data);
+
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: CircularProgressIndicator(),

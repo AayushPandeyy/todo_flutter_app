@@ -40,15 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, int> tasksCompletedPerDay = {
-      "Sun": 1,
-      "Mon": 3,
-      "Tue": 5,
-      "Wed": 2,
-      "Thu": 7,
-      "Fri": 4,
-      "Sat": 6,
-    };
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorsToUse().primaryColor,
