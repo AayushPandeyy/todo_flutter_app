@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/ScheduleScreen.dart';
+import 'package:todo_firebase_app/pages/auth/AuthScreen.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 import 'package:todo_firebase_app/pages/categoryScreen/CategoryScreen.dart';
 import 'package:todo_firebase_app/pages/taskScreens/TaskScreen.dart';
@@ -50,7 +51,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           DrawerTile(Icons.logout, () async {
             await authService.logout();
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const SignInScreen()));
+                MaterialPageRoute(builder: (context) => const AuthScreen()));
           }, "Logout"),
           DrawerTile(Icons.close, () {
             Navigator.pop(context);

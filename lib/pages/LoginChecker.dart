@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/pages/MainPage.dart';
+import 'package:todo_firebase_app/pages/auth/AuthScreen.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 
 class LoginChecker extends StatelessWidget {
@@ -28,7 +29,7 @@ class LoginChecker extends StatelessWidget {
             return const MainPage();
           } else {
             // If user is not authenticated, navigate to SignInScreen
-            return const SignInScreen();
+            return const AuthScreen();
           }
         },
       ),
