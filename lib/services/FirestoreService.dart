@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Firestoreservice {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -90,6 +91,26 @@ class Firestoreservice {
     });
   }
 
+Stream<List<Map<String, dynamic>>> getTasksDueToday(String uid) {
+  // Get the current date
+  final today = DateTime.now();
+  
+  // Set start and end times for today's date
+  final startOfDay = DateTime(today.year, today.month, today.day);
+  final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59);
+
+  return FirebaseFirestore.instance
+      .collection('tasks')
+      .doc(uid)
+      .collection('todos')
+      .where("dueDate", isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+      .where("dueDate", isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+      .snapshots()
+      .map((snapshot) {
+        return snapshot.docs.map((doc) => doc.data()).toList();
+      });
+}
+
   Future<void> deleteTask(String todoId, uid) async {
     try {
       await firestore
@@ -151,43 +172,5 @@ class Firestoreservice {
         "completedDate": completedDate
       });
     } catch (e) {}
-  }
-
-  Future<Map<String, int>> getCompletedTasksCountByDate(String uid) async {
-    // Initialize the map to store counts of completed tasks by date
-    final Map<String, int> tasksCompletedByDate = {};
-
-    // Fetch all documents from the 'todos' collection for the specified user
-    final snapshot =
-        await firestore.collection('tasks').doc(uid).collection('todos').get();
-
-    // Iterate over each document in the snapshot
-    for (var doc in snapshot.docs) {
-      final data = doc.data();
-
-      // Check if the task is marked as completed
-      if (data['completed'] == true && data['completedOn'] != null) {
-        // Convert the Firestore Timestamp to DateTime
-        final completedOnDate = (data['completedOn'] as Timestamp).toDate();
-
-        // Normalize the date to just the date part (midnight)
-        final normalizedDate = DateTime(
-          completedOnDate.year,
-          completedOnDate.month,
-          completedOnDate.day,
-        );
-
-        // Increment the count of tasks completed on this normalized date
-        if (tasksCompletedByDate.containsKey(normalizedDate)) {
-          tasksCompletedByDate[normalizedDate.toString()] =
-              tasksCompletedByDate[normalizedDate]! + 1;
-        } else {
-          tasksCompletedByDate[normalizedDate.toString()] = 1;
-        }
-      }
-    }
-
-    // Return the map with counts of completed tasks by date
-    return tasksCompletedByDate;
   }
 }

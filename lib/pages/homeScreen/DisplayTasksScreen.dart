@@ -1,12 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/taskScreen/TodoCard.dart';
 
 class DisplayTasksScreen extends StatefulWidget {
-  final Stream dataStream;
-  const DisplayTasksScreen({super.key, required this.dataStream});
+  final String title;
+  final Stream<List<Map<String, dynamic>>> dataStream;
+  const DisplayTasksScreen(
+      {super.key, required this.dataStream, required this.title});
 
   @override
   State<DisplayTasksScreen> createState() => _DisplayTasksScreenState();
@@ -15,12 +15,19 @@ class DisplayTasksScreen extends StatefulWidget {
 class _DisplayTasksScreenState extends State<DisplayTasksScreen> {
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         top: true,
         child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: ColorsToUse().primaryColor,
+            iconTheme: IconThemeData(color: Colors.white),
+            title: Text(widget.title,
+                style: TextStyle(
+                    fontSize: 40, fontFamily: "Debug", color: Colors.white)),
+          ),
           backgroundColor: ColorsToUse().primaryColor,
-          body: StreamBuilder(
+          body: StreamBuilder<List<Map<String, dynamic>>>(
               stream: widget.dataStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -29,7 +36,7 @@ class _DisplayTasksScreenState extends State<DisplayTasksScreen> {
                   );
                 }
 
-                if (snapshot.data!.isEmpty) {
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
                     child: Text(
                       "No Tasks",

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/DisplayTasksScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/homeScreen/CustomDrawer.dart';
@@ -40,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         child: Scaffold(
             backgroundColor: ColorsToUse().primaryColor,
@@ -125,15 +125,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   dataBox(
-                                      "All Tasks", totalTasks, Icons.task_alt),
-                                  dataBox("Completed", numberOfCompletedTask,
-                                      Icons.check),
+                                      "All Tasks",
+                                      totalTasks,
+                                      Icons.task_alt,
+                                      firestoreService.getTasksBasedOnUser(
+                                          auth.currentUser!.uid)),
+                                  dataBox(
+                                      "Completed",
+                                      numberOfCompletedTask,
+                                      Icons.check,
+                                      firestoreService
+                                          .getTasksBasedOnUserAndStatus(
+                                              auth.currentUser!.uid, true)),
                                   dataBox(
                                       "Incomplete",
                                       totalTasks - numberOfCompletedTask,
-                                      Icons.close),
-                                  dataBox("Due Today", numberOfTasksDueToday,
-                                      Icons.today),
+                                      Icons.close,
+                                      firestoreService
+                                          .getTasksBasedOnUserAndStatus(
+                                              auth.currentUser!.uid, false)),
+                                  dataBox(
+                                      "Due Today",
+                                      numberOfTasksDueToday,
+                                      Icons.today,
+                                      firestoreService.getTasksDueToday(
+                                          auth.currentUser!.uid))
                                 ],
                               ),
                               const SizedBox(
@@ -212,57 +228,70 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget dataBox(String title, int data, IconData icon) {
-    return Column(
-      children: [
-        Container(
-          height: 70,
-          width: MediaQuery.sizeOf(context).width * 0.91,
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(15)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(
-                width: 10,
-              ),
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(20)),
-                child: Icon(icon),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                        fontFamily: "Gabarito",
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 216, 214, 214)),
+  Widget dataBox(String title, int data, IconData icon,
+      Stream<List<Map<String, dynamic>>> stream) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DisplayTasksScreen(
+                      dataStream: stream,
+                      title: title,
+                    )));
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            width: MediaQuery.sizeOf(context).width * 0.91,
+            decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(15)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Icon(icon),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                          fontFamily: "Gabarito",
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 216, 214, 214)),
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                data.toString(),
-                style: const TextStyle(
-                    fontFamily: "Gabarito",
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: 20,
-              )
-            ],
+                Text(
+                  data.toString(),
+                  style: const TextStyle(
+                      fontFamily: "Gabarito",
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 20,
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 10,
-        )
-      ],
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ),
     );
   }
 }
