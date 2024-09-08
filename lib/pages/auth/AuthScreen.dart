@@ -21,33 +21,35 @@ class _AuthScreenState extends State<AuthScreen> {
               iconTheme: IconThemeData(color: Colors.white),
               // centerTitle: true,
               titleSpacing: 0,
-              title: Container(
-                padding: const EdgeInsets.all(15),
-                color: ColorsToUse().primaryColor,
-                child: const TabBar(
-                  dividerColor: Colors.transparent,
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Tab(
-                      text: 'Login',
+              bottom: PreferredSize(
+                preferredSize: Size(200, 50),
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  color: ColorsToUse().primaryColor,
+                  child: const TabBar(
+                    dividerColor: Colors.transparent,
+                    indicatorColor: Colors.white,
+                    tabs: [
+                      Tab(
+                        text: 'Login',
+                      ),
+                      Tab(
+                        text: 'Register',
+                      ),
+                    ],
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Tab(
-                      text: 'Register',
+                    unselectedLabelStyle: TextStyle(
+                      fontSize: 14.0,
                     ),
-                  ],
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 14.0,
                   ),
                 ),
               )),
           body: const TabBarView(children: [SignInScreen(), RegisterScreen()])),
     );
-    ;
   }
 }

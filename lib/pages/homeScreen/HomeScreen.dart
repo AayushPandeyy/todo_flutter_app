@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
-import 'package:todo_firebase_app/pages/homeScreen/DisplayTasksScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/CompletedScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/PendingScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/homeScreen/CustomDrawer.dart';
-import 'package:todo_firebase_app/widgets/homeScreen/CustomLineGraph.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,9 +18,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final auth = FirebaseAuth.instance;
   final firestoreService = Firestoreservice();
+  late TabController _tabController;
   String determineTimeOfDay() {
     DateTime now = DateTime.now();
     if (now.hour <= 12) {
@@ -35,8 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,20 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         }
 
-                        int totalTasks = snapshot.data!.length;
-                        final numberOfCompletedTask = snapshot.data!
-                            .where((data) => data["completed"] == true)
-                            .toList()
-                            .length;
-                        final numberOfTasksDueToday = snapshot.data!
-                            .where((data) => (DateFormat('d MMMM yyyy').format(
-                                        (data["dueDate"] as Timestamp)
-                                            .toDate()) ==
-                                    DateFormat('d MMMM yyyy')
-                                        .format(DateTime.now()) &&
-                                data["completed"] == false))
-                            .toList()
-                            .length;
                         return Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
@@ -100,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text(
                                 determineTimeOfDay(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 15,
                                     fontFamily: "MarkoOne",
                                     color: Colors.white),
@@ -120,47 +113,34 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  dataBox(
-                                      "All Tasks",
-                                      totalTasks,
-                                      Icons.task_alt,
-                                      firestoreService.getTasksBasedOnUser(
-                                          auth.currentUser!.uid)),
-                                  dataBox(
-                                      "Completed",
-                                      numberOfCompletedTask,
-                                      Icons.check,
-                                      firestoreService
-                                          .getTasksBasedOnUserAndStatus(
-                                              auth.currentUser!.uid, true)),
-                                  dataBox(
-                                      "Incomplete",
-                                      totalTasks - numberOfCompletedTask,
-                                      Icons.close,
-                                      firestoreService
-                                          .getTasksBasedOnUserAndStatus(
-                                              auth.currentUser!.uid, false)),
-                                  dataBox(
-                                      "Due Today",
-                                      numberOfTasksDueToday,
-                                      Icons.today,
-                                      firestoreService.getTasksDueToday(
-                                          auth.currentUser!.uid))
+                              TabBar(
+                                controller: _tabController,
+                                dividerHeight: 0,
+                                indicatorColor: Colors.red,
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                labelColor: Colors.white,
+                                unselectedLabelColor: Colors.grey,
+                                labelStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                unselectedLabelStyle: const TextStyle(
+                                  fontSize: 14.0,
+                                ),
+                                tabs: const [
+                                  Tab(text: 'Pending'),
+                                  Tab(text: 'Completed'),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
                               Expanded(
-                                child: Center(child: BannerAdWidget()),
-                              )
+                                child: TabBarView(
+                                    controller: _tabController,
+                                    children: const [
+                                      PendingScreen(),
+                                      CompletedScreen()
+                                    ]),
+                              ),
+                              Center(child: BannerAdWidget())
                             ],
                           ),
                         );
@@ -224,73 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget dataBox(String title, int data, IconData icon,
-      Stream<List<Map<String, dynamic>>> stream) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DisplayTasksScreen(
-                      dataStream: stream,
-                      title: title,
-                    )));
-      },
-      child: Column(
-        children: [
-          Container(
-            height: 70,
-            width: MediaQuery.sizeOf(context).width * 0.91,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(15)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Icon(icon),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                          fontFamily: "Gabarito",
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 216, 214, 214)),
-                    ),
-                  ),
-                ),
-                Text(
-                  data.toString(),
-                  style: const TextStyle(
-                      fontFamily: "Gabarito",
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: 20,
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
       ),
     );
   }

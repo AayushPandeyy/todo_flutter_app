@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_firebase_app/pages/ScheduleScreen.dart';
 import 'package:todo_firebase_app/pages/homeScreen/HomeScreen.dart';
-import 'package:todo_firebase_app/pages/taskScreens/TaskScreen.dart';
+import 'package:todo_firebase_app/pages/profileScreen/ProfileScreen.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
 class MainPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int selectedPage = 0;
-  final pages = const [HomeScreen(), TaskScreen()];
+  final pages = const [HomeScreen(), ScheduleScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,15 +32,21 @@ class _MainPageState extends State<MainPage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
+              Icons.center_focus_strong,
             ),
-            label: "Home",
+            label: "Mission",
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.task,
+              Icons.schedule,
             ),
-            label: "Tasks",
+            label: "Schedule",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+            ),
+            label: "Profile",
           ),
         ],
       ),

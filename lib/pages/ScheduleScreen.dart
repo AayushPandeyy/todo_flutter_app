@@ -105,6 +105,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     ),
                   );
                 },
+                allowedViews: const [
+                  CalendarView.timelineMonth,
+                  CalendarView.timelineWeek,
+                  CalendarView.month
+                ],
                 initialSelectedDate: _selectedDay,
                 dataSource: EventDataSource(_appointments),
                 onTap: (CalendarTapDetails details) {
