@@ -32,7 +32,7 @@ class _TodoCardState extends State<TodoCard> {
   void loadInterstitialAd() {
     InterstitialAd.load(
       adUnitId:
-          'ca-app-pub-3940256099942544/1033173712', // Replace with your Ad Unit ID
+          'ca-app-pub-3804780729029008/1314306115', // Replace with your Ad Unit ID
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {

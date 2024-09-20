@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
             backgroundColor: ColorsToUse().primaryColor,
             drawer: const CustomDrawer(),
             appBar: AppBar(
-              title: const Text("Taskopia",
+              title: const Text("Task Mate",
                   style: TextStyle(
                       fontSize: 40, fontFamily: "Debug", color: Colors.white)),
               centerTitle: true,

@@ -5,13 +5,10 @@ import 'package:todo_firebase_app/firebase_options.dart';
 import 'package:todo_firebase_app/pages/LoginChecker.dart';
 
 void main() async {
-  final devices = ["D0CAC40D4C6FACD5E21BF5AF3B84763E"];
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   MobileAds.instance.initialize();
-  RequestConfiguration configuration =
-     RequestConfiguration(testDeviceIds: devices);
-     MobileAds.instance.updateRequestConfiguration(configuration);
+
   runApp(const MyApp());
 }
 
@@ -21,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Taskopia',
+      title: 'Task Mate',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
