@@ -204,7 +204,18 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
                             ));
                     isAdd ? addTodo() : updateTodo();
                     Navigator.pop(context);
-                  })
+                  }),
+              const SizedBox(
+                height: 10,
+              ),
+              !isAdd
+                  ? CustomButton(
+                      text: "Delete Task",
+                      onPress: () {
+                        firestoreService.deleteTask(widget.todoId!,
+                            FirebaseAuth.instance.currentUser!.uid);
+                      })
+                  : Container()
             ],
           ),
         ),

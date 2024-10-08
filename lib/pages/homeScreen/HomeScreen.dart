@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
-import 'package:todo_firebase_app/pages/homeScreen/CompletedScreen.dart';
-import 'package:todo_firebase_app/pages/homeScreen/PendingScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/common/CustomTextField.dart';
@@ -147,11 +144,31 @@ class _HomeScreenState extends State<HomeScreen>
                                           .map((data) => Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: TodoCard(
-                                                    status: data["completed"],
-                                                    todoId: data["uid"],
-                                                    dueDate: data["dueDate"],
-                                                    task: data["task"]),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => AddOrUpdateTaskScreen(
+                                                                todoId:
+                                                                    data["uid"],
+                                                                title: data[
+                                                                    "task"],
+                                                                dueDate: (data[
+                                                                            "dueDate"]
+                                                                        as Timestamp)
+                                                                    .toDate(),
+                                                                category: data[
+                                                                    "category"],
+                                                                type: Taskcreationtype
+                                                                    .Update)));
+                                                  },
+                                                  child: TodoCard(
+                                                      status: data["completed"],
+                                                      todoId: data["uid"],
+                                                      dueDate: data["dueDate"],
+                                                      task: data["task"]),
+                                                ),
                                               ))
                                           .toList()))
                             ],
