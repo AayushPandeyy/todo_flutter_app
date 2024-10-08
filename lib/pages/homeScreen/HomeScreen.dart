@@ -9,7 +9,9 @@ import 'package:todo_firebase_app/pages/homeScreen/CompletedScreen.dart';
 import 'package:todo_firebase_app/pages/homeScreen/PendingScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
+import 'package:todo_firebase_app/widgets/common/CustomTextField.dart';
 import 'package:todo_firebase_app/widgets/homeScreen/CustomDrawer.dart';
+import 'package:todo_firebase_app/widgets/taskScreen/TodoCard.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -55,10 +57,12 @@ class _HomeScreenState extends State<HomeScreen>
             appBar: AppBar(
               title: const Text("Task Mate",
                   style: TextStyle(
-                      fontSize: 40, fontFamily: "Debug", color: Colors.white)),
+                      fontSize: 40,
+                      fontFamily: "Debug",
+                      color: Colors.black87)),
               centerTitle: true,
               iconTheme: const IconThemeData(
-                color: Colors.white,
+                color: Colors.black87,
               ),
               backgroundColor: ColorsToUse().primaryColor,
             ),
@@ -96,16 +100,21 @@ class _HomeScreenState extends State<HomeScreen>
                                 style: const TextStyle(
                                     fontSize: 15,
                                     fontFamily: "MarkoOne",
-                                    color: Colors.white),
+                                    color: Colors.black87),
                               ),
                               Text(
                                 username,
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontFamily: "MarkoOne",
-                                    color: Colors.white,
+                                    color: Colors.black87,
                                     fontWeight: FontWeight.bold),
                               ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const CustomTextField(
+                                  placeholder: "Search Tasks"),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -113,34 +122,38 @@ class _HomeScreenState extends State<HomeScreen>
                               const SizedBox(
                                 height: 10,
                               ),
-                              TabBar(
-                                controller: _tabController,
-                                dividerHeight: 0,
-                                indicatorColor: Colors.red,
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                labelColor: Colors.white,
-                                unselectedLabelColor: Colors.grey,
-                                labelStyle: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                unselectedLabelStyle: const TextStyle(
-                                  fontSize: 14.0,
-                                ),
-                                tabs: const [
-                                  Tab(text: 'Pending'),
-                                  Tab(text: 'Completed'),
+                              Center(child: BannerAdWidget()),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "TODO Items",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(
+                                    "Status",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  )
                                 ],
                               ),
-                              Expanded(
-                                child: TabBarView(
-                                    controller: _tabController,
-                                    children: const [
-                                      PendingScreen(),
-                                      CompletedScreen()
-                                    ]),
+                              const SizedBox(
+                                height: 10,
                               ),
-                              Center(child: BannerAdWidget())
+                              Expanded(
+                                  child: ListView(
+                                      children: snapshot.data!
+                                          .map((data) => Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: TodoCard(
+                                                    status: data["completed"],
+                                                    todoId: data["uid"],
+                                                    dueDate: data["dueDate"],
+                                                    task: data["task"]),
+                                              ))
+                                          .toList()))
                             ],
                           ),
                         );
@@ -153,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen>
       height: 80,
       width: MediaQuery.sizeOf(context).width * 0.91,
       decoration: BoxDecoration(
-          color: ColorsToUse().secondaryColor,
+          color: const Color.fromARGB(255, 109, 32, 26),
           borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -167,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Text(
                   "Create new task",
                   style: TextStyle(
+                    color: Colors.white,
                     fontFamily: "Gabarito",
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -175,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Text(
                   "You can create new task here",
                   style: TextStyle(
+                    color: Colors.white,
                     fontFamily: "Gabarito",
                     fontSize: 15,
                   ),
@@ -195,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 )));
                   },
                   icon: const Icon(
-                    color: Colors.white,
+                    color: Colors.black87,
                     Icons.add,
                     size: 25,
                     fill: 1,

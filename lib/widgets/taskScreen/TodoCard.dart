@@ -72,7 +72,10 @@ class _TodoCardState extends State<TodoCard> {
       height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: ColorsToUse().secondaryColor),
+          color: DateTime.now().difference(widget.dueDate!.toDate()) <
+                  Duration(days: 1)
+              ? Colors.white
+              : Color(0xffFF0000)),
       child: Row(
         children: [
           Checkbox(
@@ -85,7 +88,7 @@ class _TodoCardState extends State<TodoCard> {
                   completed, widget.todoId, auth.currentUser!.uid);
               _interstitialAd!.show();
             },
-            checkColor: ColorsToUse().secondaryColor,
+            checkColor: Colors.white,
             activeColor: Colors.black,
           ),
           Expanded(
@@ -112,38 +115,13 @@ class _TodoCardState extends State<TodoCard> {
                                 : TextDecoration.none,
                             fontFamily: "Gabarito",
                             fontSize: 15,
-                            color: DateTime.now()
-                                        .difference(widget.dueDate!.toDate()) <
-                                    Duration(days: 1)
-                                ? Colors.green
-                                : Colors.red,
+                            color: Colors.black,
                             fontWeight: FontWeight.bold),
                       )
                     : Container()
               ],
             ),
           ),
-          Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.black),
-              child: Center(
-                  child: IconButton(
-                onPressed: () async {
-                  try {
-                    await firestoreService.deleteTask(
-                        widget.todoId, auth.currentUser!.uid);
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-                icon: const Icon(Icons.delete),
-                color: Colors.red,
-              ))),
-          const SizedBox(
-            width: 10,
-          )
         ],
       ),
     );
