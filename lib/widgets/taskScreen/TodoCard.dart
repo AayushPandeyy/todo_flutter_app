@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
-import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 
 class TodoCard extends StatefulWidget {
   final bool status;
@@ -26,7 +24,7 @@ class TodoCard extends StatefulWidget {
 InterstitialAd? _interstitialAd;
 int _numInterstitialLoadAttempts = 0;
 
-final int _maxFailedLoadAttempts = 3;
+const int _maxFailedLoadAttempts = 3;
 
 class _TodoCardState extends State<TodoCard> {
   void loadInterstitialAd() {
@@ -69,13 +67,13 @@ class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      // height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: DateTime.now().difference(widget.dueDate!.toDate()) <
-                  Duration(days: 1)
+                  const Duration(days: 1)
               ? Colors.white
-              : Color(0xffFF0000)),
+              : const Color(0xffFF0000)),
       child: Row(
         children: [
           Checkbox(
@@ -99,26 +97,48 @@ class _TodoCardState extends State<TodoCard> {
                 Text(
                   widget.task,
                   style: TextStyle(
-                      decoration: widget.status
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                      fontFamily: "Gabarito",
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+                    decoration: widget.status
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    fontFamily: "Gabarito",
+                    fontSize: 25,
+                  ),
                 ),
                 widget.dueDate != null
                     ? Text(
                         "Due Date : ${DateFormat('d MMMM yyyy').format(widget.dueDate!.toDate())}",
                         style: TextStyle(
-                            decoration: widget.status
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                            fontFamily: "Gabarito",
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                          decoration: widget.status
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                          fontFamily: "Gabarito",
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
                       )
-                    : Container()
+                    : Container(),
+                const Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.event_repeat,
+                        size: 15,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(
+                        Icons.circle,
+                        size: 15,
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                )
               ],
             ),
           ),

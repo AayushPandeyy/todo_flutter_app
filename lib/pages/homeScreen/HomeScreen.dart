@@ -143,7 +143,9 @@ class _HomeScreenState extends State<HomeScreen>
                                       children: snapshot.data!
                                           .map((data) => Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
                                                 child: GestureDetector(
                                                   onTap: () {
                                                     Navigator.push(
@@ -215,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             Container(
               decoration: BoxDecoration(
-                  color: ColorsToUse().primaryColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(100)),
               child: IconButton(
                   onPressed: () {

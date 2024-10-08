@@ -18,7 +18,7 @@ class CategoryTile extends StatelessWidget {
           Icon(icon),
           Text(
             category,
-            style: TextStyle(
+            style:const TextStyle(
                 fontSize: 20,
                 fontFamily: "MarkoOne",
                 fontWeight: FontWeight.bold),
