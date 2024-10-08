@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/auth/AuthScreen.dart';
-import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/HomeScreen.dart';
 
 class LoginChecker extends StatelessWidget {
   const LoginChecker({super.key});
@@ -26,7 +25,7 @@ class LoginChecker extends StatelessWidget {
           // Check if user data is available
           if (snapshot.hasData) {
             // If user is authenticated, navigate to MainPage
-            return const MainPage();
+            return const HomeScreen();
           } else {
             // If user is not authenticated, navigate to SignInScreen
             return const AuthScreen();

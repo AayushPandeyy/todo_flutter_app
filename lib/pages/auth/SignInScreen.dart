@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/auth/RegisterScreen.dart';
+import 'package:todo_firebase_app/pages/homeScreen/HomeScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/utilities/DialogBox.dart';
@@ -47,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
         _resetFields();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       }
     } on FirebaseAuthException catch (e) {

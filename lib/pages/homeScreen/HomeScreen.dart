@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/admob/CustomBannerAd.dart';
 import 'package:todo_firebase_app/enums/TaskCreationType.dart';
 import 'package:todo_firebase_app/pages/AddOrUpdateTaskScreen.dart';
+import 'package:todo_firebase_app/pages/profileScreen/ProfileScreen.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
 import 'package:todo_firebase_app/widgets/common/CustomTextField.dart';
@@ -52,6 +53,17 @@ class _HomeScreenState extends State<HomeScreen>
             backgroundColor: ColorsToUse().primaryColor,
             drawer: const CustomDrawer(),
             appBar: AppBar(
+              actions: [
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const ProfileScreen()));
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://s3-alpha-sig.figma.com/img/ad02/30e5/1cf72c468f60f22a06ee0b26b40e974f?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=jL5J1WXP9qFIWNaMmY-CTGK~fUFUlbx3UOUIFMPFKLLISoewuuuu7AG~YwkrbFFAr-WeM5Lo79rWHroSZp04VpiMEZfeRwjNaGQceilrT~K3mbw8A1CCFODIxerRwLFYCcql8rYVVnyyMHsBZaaOr2BwyOcDmH2s-VQFtkIX8BVW~YYCPTbEI8i2SfvlcLRr4BIc8XPL3ffoeoKHcHd8hg-1o5JT9Dqpztwqa77dmbNoTAZWIFpFHkOpgUrG2rXqSnshGK323XoiEWgejv6bsA~3-NT3XGyBqBelyY-mLt~M9seOpN8fLf8pm1mrGu1Q~1pc~2ZY22H6Yvv5S3m1ug__"),
+                  ),
+                )
+              ],
               title: const Text("Task Mate",
                   style: TextStyle(
                       fontSize: 40,

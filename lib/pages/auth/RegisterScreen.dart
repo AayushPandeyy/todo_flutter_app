@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase_app/pages/MainPage.dart';
 import 'package:todo_firebase_app/pages/auth/SignInScreen.dart';
 import 'package:todo_firebase_app/services/AuthFirebaseService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
