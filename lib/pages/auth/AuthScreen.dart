@@ -18,7 +18,6 @@ class _AuthScreenState extends State<AuthScreen> {
       child: Scaffold(
           appBar: AppBar(
               backgroundColor: ColorsToUse().primaryColor,
-              iconTheme: IconThemeData(color: Colors.white),
               // centerTitle: true,
               titleSpacing: 0,
               bottom: PreferredSize(
@@ -28,7 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   color: ColorsToUse().primaryColor,
                   child: const TabBar(
                     dividerColor: Colors.transparent,
-                    indicatorColor: Colors.white,
+                    indicatorColor: Colors.black,
                     tabs: [
                       Tab(
                         text: 'Login',
@@ -37,7 +36,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         text: 'Register',
                       ),
                     ],
-                    labelColor: Colors.white,
+                    labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey,
                     labelStyle: TextStyle(
                       fontSize: 16.0,
