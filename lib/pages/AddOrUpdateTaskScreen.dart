@@ -93,8 +93,8 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
     } else {
       await firestoreService.addTodo(auth.currentUser!.uid, taskController.text,
           _selectedCategory, _selectedDay, FieldValue.serverTimestamp());
-      _interstitialAd!.show();
       Navigator.pop(context);
+      _interstitialAd!.show();
     }
   }
 
@@ -182,7 +182,7 @@ class _AddOrUpdateTaskScreenState extends State<AddOrUpdateTaskScreen> {
                       _selectedCategory = category;
                     });
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               CustomButton(

@@ -54,13 +54,19 @@ class _HomeScreenState extends State<HomeScreen>
             drawer: const CustomDrawer(),
             appBar: AppBar(
               actions: [
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const ProfileScreen()));
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://s3-alpha-sig.figma.com/img/ad02/30e5/1cf72c468f60f22a06ee0b26b40e974f?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=jL5J1WXP9qFIWNaMmY-CTGK~fUFUlbx3UOUIFMPFKLLISoewuuuu7AG~YwkrbFFAr-WeM5Lo79rWHroSZp04VpiMEZfeRwjNaGQceilrT~K3mbw8A1CCFODIxerRwLFYCcql8rYVVnyyMHsBZaaOr2BwyOcDmH2s-VQFtkIX8BVW~YYCPTbEI8i2SfvlcLRr4BIc8XPL3ffoeoKHcHd8hg-1o5JT9Dqpztwqa77dmbNoTAZWIFpFHkOpgUrG2rXqSnshGK323XoiEWgejv6bsA~3-NT3XGyBqBelyY-mLt~M9seOpN8fLf8pm1mrGu1Q~1pc~2ZY22H6Yvv5S3m1ug__"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileScreen()));
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          "https://s3-alpha-sig.figma.com/img/ad02/30e5/1cf72c468f60f22a06ee0b26b40e974f?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=jL5J1WXP9qFIWNaMmY-CTGK~fUFUlbx3UOUIFMPFKLLISoewuuuu7AG~YwkrbFFAr-WeM5Lo79rWHroSZp04VpiMEZfeRwjNaGQceilrT~K3mbw8A1CCFODIxerRwLFYCcql8rYVVnyyMHsBZaaOr2BwyOcDmH2s-VQFtkIX8BVW~YYCPTbEI8i2SfvlcLRr4BIc8XPL3ffoeoKHcHd8hg-1o5JT9Dqpztwqa77dmbNoTAZWIFpFHkOpgUrG2rXqSnshGK323XoiEWgejv6bsA~3-NT3XGyBqBelyY-mLt~M9seOpN8fLf8pm1mrGu1Q~1pc~2ZY22H6Yvv5S3m1ug__"),
+                    ),
                   ),
                 )
               ],
@@ -104,24 +110,6 @@ class _HomeScreenState extends State<HomeScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                determineTimeOfDay(),
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "MarkoOne",
-                                    color: Colors.black87),
-                              ),
-                              Text(
-                                username,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: "MarkoOne",
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
                               const CustomTextField(
                                   placeholder: "Search Tasks"),
                               const SizedBox(

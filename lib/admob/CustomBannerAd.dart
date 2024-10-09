@@ -41,12 +41,12 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     if (_isAdLoaded) {
       return Container(
         alignment: Alignment.center,
-        width: _bannerAd!.size.width.toDouble(),
+        width: MediaQuery.sizeOf(context).width * 0.9,
         height: _bannerAd!.size.height.toDouble(),
         child: AdWidget(ad: _bannerAd!),
       );
     } else {
-      return SizedBox.shrink(); // Empty space while the ad is loading
+      return const SizedBox.shrink(); // Empty space while the ad is loading
     }
   }
 

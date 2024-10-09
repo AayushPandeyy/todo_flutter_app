@@ -20,6 +20,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xffE9EBFF),
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.sizeOf(context).width, 100),
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                color: Colors.transparent,
+                height: 50,
+                child: Row(children: [
+                  const SizedBox(width: 5),
+                  IconButton(
+                    alignment: Alignment.centerLeft,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                    color: Colors.black,
+                    iconSize: 30,
+                  ),
+                  const Text(
+                    "Back",
+                    style: TextStyle(color: Colors.black),
+                  )
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Container(
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    child: Row(
+                      children: [
+                        Image(
+                            image: NetworkImage(
+                                "https://t3.ftcdn.net/jpg/02/35/26/30/360_F_235263034_miJw2igmixo7ymCqhHZ7c8wp9kaujzfM.jpg")),
+                        Text("50"),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       body: StreamBuilder(
           stream: service.getUserDataByEmail(auth.currentUser!.email!),
           builder: (context, snapshot) {
