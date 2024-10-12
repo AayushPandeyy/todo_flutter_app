@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase_app/services/FirestoreService.dart';
 import 'package:todo_firebase_app/utilities/ColorsToUse.dart';
+import 'package:todo_firebase_app/widgets/profileScreen/ResponsivePriorityItem.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -102,18 +103,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 10,
                       ),
                       Container(
-                        width: MediaQuery.sizeOf(context).width * 0.3,
+                        // width: MediaQuery.sizeOf(context).width * 0.3,
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(20)),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 CupertinoIcons.exclamationmark_octagon,
                                 color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 3,
                               ),
                               Text(
                                 "Remove Ads",
@@ -202,119 +207,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white),
-                            height: MediaQuery.sizeOf(context).height * 0.25,
-                            width: MediaQuery.sizeOf(context).width * 0.45,
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white,
+                            ),
+                            // Dynamically adjust height and width using MediaQuery
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: MediaQuery.of(context).size.width * 0.45,
                             child: Column(
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                // Header Row with dynamic spacing
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                            0.02,
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            0.01,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "Priorities",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                      Flexible(
+                                        child: Text(
+                                          "Priorities",
+                                          style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                      Icon(Icons.crisis_alert_sharp)
+                                      Icon(
+                                        Icons.crisis_alert_sharp,
+                                        size:
+                                            MediaQuery.of(context).size.width *
+                                                0.07, // Icon size is dynamic
+                                      ),
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  child: Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        color: ColorsToUse().primaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text("1"),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text("High")
-                                        ],
-                                      ),
+                                Expanded(
+                                  child: ListView(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width *
+                                              0.02,
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              0.005,
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  child: Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
+                                    children: [
+                                      // Priority item
+                                      ResponsivePriorityItem(
+                                        priorityText: "High",
+                                        count: "1",
                                         color: ColorsToUse().primaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text("1"),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text("Medium")
-                                        ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  child: Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
+                                      ResponsivePriorityItem(
+                                        priorityText: "Medium",
+                                        count: "1",
                                         color: ColorsToUse().primaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text("0"),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text("Low")
-                                        ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  child: Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
+                                      ResponsivePriorityItem(
+                                        priorityText: "Low",
+                                        count: "0",
                                         color: ColorsToUse().primaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text("0"),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text("Extras")
-                                        ],
                                       ),
-                                    ),
+                                      ResponsivePriorityItem(
+                                        priorityText: "Extras",
+                                        count: "0",
+                                        color: ColorsToUse().primaryColor,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                          )
                         ],
                       ),
                       const SizedBox(
